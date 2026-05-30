@@ -32,7 +32,6 @@ export const config = {
   coingeckoapi: {
 	base_url: 'https://api.coingecko.com/api/v3',
     key: process.env.COINGECKO_API_KEY,
-    ids: [],
   },
   client: {
     url: process.env.CLIENT_URL,
