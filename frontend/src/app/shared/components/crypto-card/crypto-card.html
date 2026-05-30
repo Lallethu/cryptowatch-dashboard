@@ -1,0 +1,9 @@
+<div class="card-header">
+  <img src="{{ coin.image }}" alt="{{ coin.name }}" />
+  <h3>{{ coin.name }}</h3>
+</div>
+<p class="symbol">{{ coin.symbol }}</p>
+<p class="value">{{ coin.current_price | currency: 'USD' }}</p>
+<p class="percentage" [class]="coin.price_change_24h < 0 ? 'color-red' : 'color-green'">
+  <span>{{ coin.price_change_24h | signedNumber }}%</span>
+</p>
