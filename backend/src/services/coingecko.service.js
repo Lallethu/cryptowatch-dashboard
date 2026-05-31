@@ -4,10 +4,12 @@ import { AppError } from '../middleware/errorHandler.js'
 const SEVEN_DAYS_TIMESTAMP = 7 * 24 * 60 * 60 * 1000
 
 export const CoinGeckoService = {
-  getMarkets: async () => {
+  getMarkets: async (ids = []) => {
+    const idsString = ids.join(',')
     const searchParams = new URLSearchParams({
       price_change_percentage: '24h',
       order: 'market_cap_desc',
+      ids: idsString ?? '',
       vs_currency: 'usd',
       per_page: 10,
       page: 1,
