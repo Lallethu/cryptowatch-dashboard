@@ -1,10 +1,13 @@
 @if (isLoading()) {
   <app-spinner message="Refreshing the board..." />
 } @else {
-  <button class="btn" (click)="loadMarkets()" [disabled]="isLoading()">Refresh</button>
+  <div class="dashboard-toolbar">
+    <button class="btn" (click)="loadMarkets()" [disabled]="isLoading()">Refresh</button>
+    <app-search-bar (searchChange)="searchText.set($event)" />
+  </div>
 
   <section class="main-cards-container">
-    @for (coin of coins(); track coin.id) {
+    @for (coin of coins() | filterSearch: searchText(); track coin.id) {
       <app-crypto-card
         class="main-card"
         [attr.data-symbol]="coin.symbol.toLowerCase()"
