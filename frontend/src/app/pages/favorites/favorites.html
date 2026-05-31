@@ -1,0 +1,31 @@
+@if (isLoading()) {
+  <div class="favorites-loading">
+	<app-spinner [message]="'Fetching your favorites crypto coins...'"/>
+  </div>
+} @else if (coins().length === 0) {
+  <div class="favorites-empty">
+    <span class="favorites-empty-icon">☆</span>
+    <p class="favorites-empty-title">There is favorite coins yet</p>
+    <p class="favorites-empty-sub">Explore the dashboard and add your favorite cryptos</p>
+    <a class="favorites-empty-link" routerLink="/">Back to dashboard</a>
+  </div>
+} @else {
+  <div class="favorites-wrapper">
+    <div class="favorites-header">
+      <h2 class="favorites-title">My favorites</h2>
+      <span class="favorites-count"
+        >{{ coins().length }} crypto{{ coins().length > 1 ? 's' : '' }}</span
+      >
+    </div>
+	<a class="btn" routerLink="/">Back to dashboard</a>
+    <section class="main-cards-container">
+      @for (coin of coins(); track coin.id) {
+        <app-crypto-card
+          class="main-card"
+          [coin]="coin"
+          [attr.data-symbol]="coin.symbol.toLowerCase()"
+        />
+      }
+    </section>
+  </div>
+}
