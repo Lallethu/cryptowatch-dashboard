@@ -7,3 +7,4 @@
 <p class="percentage" [class]="coin.price_change_24h < 0 ? 'color-red' : 'color-green'">
   <span>{{ coin.price_change_24h | signedNumber }}%</span>
 </p>
+<button class="btn" (click)="navigate()">Details</button>
