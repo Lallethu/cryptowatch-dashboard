@@ -2,11 +2,12 @@ import { Component, inject, signal, OnInit } from '@angular/core';
 import { CryptoService } from '../../core/services/crypto.service'
 import type { Crypto } from '../../core/models/crypto.model';
 import { CryptoCardComponent } from "../../shared/components/crypto-card/crypto-card.component";
+import { SpinnerComponent } from "../../shared/components/spinner/spinner.component";
 
 @Component({
 	templateUrl: './dashboard.html',
 	styleUrl: './dashboard.scss',
-	imports: [CryptoCardComponent]
+	imports: [CryptoCardComponent, SpinnerComponent]
 })
 export class DashboardComponent implements OnInit {
 	private crypto = inject(CryptoService)
