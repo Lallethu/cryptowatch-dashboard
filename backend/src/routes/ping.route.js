@@ -1,6 +1,6 @@
 import { Router } from 'express'
+import { access, readFile } from 'fs/promises'
 import { config } from '../config/index.js'
-import { existsSync, readFileSync } from 'fs'
 
 const router = Router()
 
@@ -11,25 +11,37 @@ const formatUptime = seconds => {
   return `${h}h ${m}m ${s}s`
 }
 
-router.get('/', (_req, res) => {
-  const file = `src/data/${config.db.file}`
-  const isHealthy = existsSync(file)
-  const data = isHealthy ? readFileSync(file, 'utf8') : {}
-  const uptime = formatUptime(process.uptime())
+router.get('/', async (_req, res) => {
+  const filePath = `src/data/${config.db.file}`
 
-  res.status(isHealthy ? 200 : 503).json({
-    success: isHealthy,
-    data: {
-      status: isHealthy ? 'ok' : 'degraded',
-      version: '1.0.0',
-      environment: config.server.nodeEnv,
-      timestamp: new Date().toISOString(),
-      uptime,
-      services: {
-        favorites: data,
+  try {
+    await access(filePath)
+    const data = await readFile(filePath, 'utf8')
+
+    res.status(200).json({
+      success: true,
+      data: {
+        status: 'ok',
+        version: '1.0.0',
+        environment: config.server.nodeEnv,
+        timestamp: new Date().toISOString(),
+        uptime: formatUptime(process.uptime()),
+        services: { favorites: data },
       },
-    },
-  })
+    })
+  } catch {
+    res.status(503).json({
+      success: false,
+      data: {
+        status: 'degraded',
+        version: '1.0.0',
+        environment: config.server.nodeEnv,
+        timestamp: new Date().toISOString(),
+        uptime: formatUptime(process.uptime()),
+        services: { favorites: null },
+      },
+    })
+  }
 })
 
 export default router
