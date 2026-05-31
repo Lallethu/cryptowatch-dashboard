@@ -90,7 +90,7 @@ App is available at **<http://localhost:4200>**
 
 ### Frontend
 
-- Angular 17+ (standalone components, signals)
+- Angular 21+ (standalone components, signals)
 - ng2-charts + Chart.js
 - RxJS
 - SCSS
