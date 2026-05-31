@@ -5,27 +5,31 @@ import { switchMap } from 'rxjs'
 import { BaseChartDirective } from 'ng2-charts';
 import { CryptoService } from '../../core/services/crypto.service'
 import type { CryptoDetail, Crypto } from '../../core/models/crypto.model';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ChartData, ChartOptions } from 'chart.js';
+import { FavoritesService } from '../../core/services/favorites.service';
+import { SpinnerComponent } from '../../shared/components/spinner/spinner.component';
 
 @Component({
 	standalone: true,
 	selector: 'app-detail',
 	templateUrl: './detail.html',
 	styleUrl: './detail.scss',
-	imports: [BaseChartDirective, UpperCasePipe, DecimalPipe, CurrencyPipe, SignedNumberPipe],
+	imports: [BaseChartDirective, UpperCasePipe, DecimalPipe, CurrencyPipe, SignedNumberPipe, SpinnerComponent, RouterLink],
 })
 export class DetailComponent implements OnInit {
 	private router = inject(Router)
 	private activatedRoute = inject(ActivatedRoute)
 	private crypto = inject(CryptoService)
+	private favorites = inject(FavoritesService)
 	private destroyRef = inject(DestroyRef)
 
 	coin = signal<Crypto | null>(
 		this.router.currentNavigation()?.extras.state?.['coin'] ?? null
 	)
 	isLoading = signal(true)
+	isFavorite = signal(false)
 	chartType = 'line' as const
 
 	chartData: ChartData<'line', number[]> = {
@@ -65,6 +69,12 @@ export class DetailComponent implements OnInit {
 			next: (info) => this.buildChart(info),
 			error: () => this.isLoading.set(false)
 		})
+
+		this.favorites.getFavoritesIds().subscribe({
+			next: (ids) => this.isFavorite.set(ids.includes(this.coin()!.id)),
+			error: () => null
+		})
+
 	}
 
 	private buildChart(info: CryptoDetail): void {
@@ -78,5 +88,17 @@ export class DetailComponent implements OnInit {
 			}]
 		}
 		this.isLoading.set(false)
+	}
+
+	favorite(): void {
+		const id = this.coin()!.id
+		const action$ = this.isFavorite()
+			? this.favorites.removeFavorite(id)
+			: this.favorites.addFavorite(id)
+
+		action$.subscribe({
+			next: (ids) => this.isFavorite.set(ids.includes(id)),
+			error: () => null
+		})
 	}
 }
