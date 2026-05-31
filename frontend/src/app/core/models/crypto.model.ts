@@ -8,3 +8,9 @@ export interface Crypto {
 	ath: number
 	circulating_supply: number
 }
+
+export interface CryptoDetail {
+	prices: [number, number][]
+	market_caps: [number, number][]
+	total_volumes: [number, number][]
+}
