@@ -19,9 +19,9 @@ export abstract class BaseApiService {
 			.pipe(catchError(this.handleError))
 	}
 
-	protected delete<T>(endpoint: string): Observable<T> {
+	protected delete<T>(endpoint: string, body: unknown): Observable<T> {
 		return this.http
-			.delete<T>(`${this.baseUrl}${endpoint}`)
+			.delete<T>(`${this.baseUrl}${endpoint}`, { body })
 			.pipe(catchError(this.handleError))
 	}
 
