@@ -1,11 +1,15 @@
-<button class="btn" (click)="loadMarkets()" [disabled]="isLoading()">
-  {{ isLoading() ? 'Loading...' : 'Refresh' }}
-</button>
+@if (isLoading()) {
+  <app-spinner message="Refreshing the board..." />
+} @else {
+  <button class="btn" (click)="loadMarkets()" [disabled]="isLoading()">Refresh</button>
 
-@if (!isLoading()) {
   <section class="main-cards-container">
     @for (coin of coins(); track coin.id) {
-      <app-crypto-card class="main-card" [attr.data-symbol]="coin.symbol.toLowerCase()" [coin]="coin" />
+      <app-crypto-card
+        class="main-card"
+        [attr.data-symbol]="coin.symbol.toLowerCase()"
+        [coin]="coin"
+      />
     }
   </section>
 }
