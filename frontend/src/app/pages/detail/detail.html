@@ -1,5 +1,7 @@
 @if (isLoading()) {
-  <div class="detail-loading">loading</div>
+  <div class="detail-loading">
+	<app-spinner [message]="'Fetching your favorites crypto coins...'"/>
+  </div>
 } @else if (!coin()) {
   <section class="detail-wrapper">
     <div class="detail-hero">
@@ -49,6 +51,9 @@
         <span class="stat-label">Symbol</span>
         <span class="stat-value">{{ coin()!.symbol | uppercase }}</span>
       </div>
+	<button class="btn" (click)="favorite()">{{ isFavorite() ? 'Remove from favorites' : 'Add to favorites' }}</button>
+	<a class="btn" routerLink="/">Back to dashboard</a>
+	<a class="btn" routerLink="/favorites">Back to favorites</a>
     </div>
 
     <div class="chart-container">
