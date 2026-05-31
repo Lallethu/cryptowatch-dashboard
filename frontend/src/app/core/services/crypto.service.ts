@@ -12,7 +12,7 @@ export class CryptoService extends BaseApiService {
 	}
 
 	getMarkets(): Observable<Crypto[]> {
-		return this.get<ApiResponse<Crypto[]>>('/getMarkets').pipe(map(res => res.data))
+		return this.get<ApiResponse<Crypto[]>>('/get_markets').pipe(map(res => res.data))
 	}
 
 	marketChart(id: string): Observable<CryptoDetail> {
