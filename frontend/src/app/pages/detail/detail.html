@@ -1,0 +1,59 @@
+@if (isLoading()) {
+  <div class="detail-loading">loading</div>
+} @else if (!coin()) {
+  <section class="detail-wrapper">
+    <div class="detail-hero">
+      <h1 class="detail-name">No coin found</h1>
+    </div>
+  </section>
+} @else {
+  <section class="detail-wrapper">
+    <div class="detail-hero">
+      <div class="detail-hero-identity">
+        <img [src]="coin()!.image" [alt]="coin()!.name" class="detail-logo" />
+        <div>
+          <h1 class="detail-name">{{ coin()!.name }}</h1>
+          <span class="detail-symbol">{{ coin()!.symbol | uppercase }}</span>
+        </div>
+      </div>
+      <div class="detail-hero-price">
+        <p class="detail-current-price">{{ coin()!.current_price | currency: 'USD' }}</p>
+        <p
+          class="detail-change"
+          [class]="coin()!.price_change_24h < 0 ? 'color-red' : 'color-green'"
+        >
+          {{ coin()!.price_change_24h | signedNumber }}%
+        </p>
+      </div>
+    </div>
+
+    <div class="detail-stats">
+      <div class="stat-card">
+        <span class="stat-label">ATH</span>
+        <span class="stat-value">{{ coin()!.ath | currency: 'USD' }}</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-label">Supply</span>
+        <span class="stat-value">{{ coin()!.circulating_supply | number: '1.0-0' }}</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-label">24h Change</span>
+        <span
+          class="stat-value"
+          [class]="coin()!.price_change_24h < 0 ? 'color-red' : 'color-green'"
+        >
+          {{ coin()!.price_change_24h | signedNumber }}%
+        </span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-label">Symbol</span>
+        <span class="stat-value">{{ coin()!.symbol | uppercase }}</span>
+      </div>
+    </div>
+
+    <div class="chart-container">
+      <p class="chart-label">7 days price</p>
+      <canvas baseChart [data]="chartData" [type]="chartType" [options]="chartOptions"> </canvas>
+    </div>
+  </section>
+}
