@@ -9,6 +9,7 @@ export class PingService extends BaseApiService {
 		super()
 		this.baseUrl = `${this.baseUrl + '/ping'}`
 	}
+	
 	check(): Observable<PingResponse> {
 		return this.get<PingResponse>('')
 	}
