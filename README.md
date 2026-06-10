@@ -98,7 +98,6 @@ App is available at **<http://localhost:4200>**
 ### Backend
 
 - Node.js / Express
-- Axios
 - Favorites storage: JSON file (SQLite migration planned)
 
 ### External
