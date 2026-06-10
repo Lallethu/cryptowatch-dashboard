@@ -67,7 +67,7 @@ npm run start              # ng serve
 ```
 
 > Make sure the port in `frontend/src/environments/environment.ts` matches `PORT` in `backend/.env`.
-> The proxy config lives in `frontend/src/proxy.conf.json` — update it if you change the backend port.
+> The proxy config lives in `frontend/src/proxy.conf.json`, update it if you change the backend port.
 
 App is available at **<http://localhost:4200>**
 
